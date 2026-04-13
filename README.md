@@ -8,7 +8,7 @@
 
 i needed to break up my stupidly long texts when i kept hitting context limits on those tiny input boxes. searched everywhere for something that didn't look like it was made in 2005, actually worked, or didn't make me sign up / pay. couldn't find it. so here we are.
 
-feel free to use it. fork it. do whatever. it's just text splitting, not rocket science.
+feel free to use it. fork it. do whatever. it's just text splitting, not rocket science😭.
 
 ---
 
