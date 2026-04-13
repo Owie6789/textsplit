@@ -35,7 +35,7 @@ feel free to use it. fork it. do whatever. it's just text splitting, not rocket 
 
 ### Online (Recommended)
 
-Visit **[textsplit.pages.dev](https://owie6789.github.io/textsplit)** and start splitting instantly. No signup, no tracking, no nonsense.
+Visit **[owie6789.github.io/textsplit](https://owie6789.github.io/textsplit)** and start splitting instantly. No signup, no tracking, no nonsense.
 
 ### Offline
 
@@ -77,7 +77,7 @@ That's it.
 
 ---
 
-## Why Not Use It
+## When Not ToUse It
 
 - You need to split files (only supports text)
 - You want cloud storage integration (it doesn't have it)
@@ -87,7 +87,7 @@ That's it.
 
 ## Contributing
 
-Found a bug? Have an idea? Open an issue or submit an issue or PR. Keep it simple.
+Found a bug? Have an idea? Open an issue or submit a Pull Requ. Please keep it simple.
 
 ---
 
