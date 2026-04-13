@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="TextSplit - Free online text splitter tool. Split large texts into manageable chunks by character count, word count, lines, or custom delimiters. Export as JSON or TXT with custom separators. No dependencies, instant processing."/>
+  <meta name="keywords" content="text splitter, split text, chunk text, text divider, character count, word count, text tool, online text splitter, split chunks, text processor, free text tool, divide text"/>
+  <meta name="author" content="Owie"/>
+  <meta name="theme-color" content="#0e0e0e"/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="language" content="English"/>
+  
+  <meta property="og:title" content="TextSplit - Free Online Text Splitter Tool"/>
+  <meta property="og:description" content="Split large texts into manageable chunks instantly. Multiple split methods, export options, and zero dependencies. Perfect for processing large documents, code, or any text."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://owie6789.github.io/textsplit"/>
+  <meta property="og:image" content="https://i.ibb.co/gLC80F0q/ow-3.png"/>
+  
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="TextSplit - Text Chunking Made Simple"/>
+  <meta name="twitter:description" content="Split text by character count, words, lines, or custom delimiters. Export as JSON or TXT instantly. Free, fast, and no sign-up required."/>
+  <meta name="twitter:image" content="https://i.ibb.co/gLC80F0q/ow-3.png"/>
+  
+  <title>TextSplit - Free Online Text Splitter | Split Text Into Chunks Instantly</title>
+  
+  <link rel="canonical" href="https://owie6789.github.io/textsplit"/>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/gLC80F0q/ow-3.png"/>
+  <link rel="apple-touch-icon" href="https://i.ibb.co/gLC80F0q/ow-3.png"/>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;700&display=swap"/>
+  
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --surface2: #1f1f1f;
+      --surface3: #252525;
+      --border: #2a2a2a;
+      --border-hover: #404040;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --text-dim: #555;
+      --accent: #e8e8e8;
+      --success: #6b9e7f;
+      --warning: #c9956f;
+      --error: #a85555;
+      --info: #6b8fa3;
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Figtree', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 100px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+      width: 100%;
+    }
+    .header h1 {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--text);
+      font-family: 'Google Sans', sans-serif;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+    .header p {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 780px;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 20px;
+      transition: border-color 0.15s;
+    }
+    .card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── Textarea ── */
+    .textarea-wrap {
+      position: relative;
+    }
+    textarea {
+      width: 100%;
+      min-height: 240px;
+      background: var(--surface2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 16px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    textarea:focus {
+      border-color: var(--border-hover);
+      box-shadow: inset 0 0 0 2px rgba(232, 232, 232, 0.1);
+    }
+    textarea::placeholder {
+      color: var(--text-dim);
+    }
+    textarea::selection {
+      background: rgba(107, 158, 127, 0.3);
+      color: var(--text);
+    }
+
+    .char-counter {
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 12px;
+      color: var(--text-dim);
+      pointer-events: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Options Grid ── */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .option-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .option-group .helper-text {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    select:focus, input:focus {
+      border-color: var(--border-hover);
+      box-shadow: inset 0 0 0 2px rgba(232, 232, 232, 0.1);
+    }
+    input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 20px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.12s cubic-bezier(0.2, 0, 0.8, 1);
+      user-select: none;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid rgba(232, 232, 232, 0.5);
+      outline-offset: 2px;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn-primary:hover {
+      background: #d0d0d0;
+      border-color: #d0d0d0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .btn-ghost:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .btn-sm {
+      font-size: 12px;
+      padding: 7px 13px;
+      gap: 5px;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-clear {
+      margin-left: auto;
+    }
+
+    /* ── Results ── */
+    #results-section {
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .results-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .results-meta strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .results-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.2s;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      max-width: 400px;
+      width: 100%;
+      animation: slideUp 0.3s cubic-bezier(0.2, 0, 0.8, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .modal-body label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .modal-body input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .modal-body input:focus {
+      border-color: var(--border-hover);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+    }
+
+    /* ── Chunk ── */
+    .chunk {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.15s;
+    }
+    .chunk:hover {
+      border-color: var(--border-hover);
+      background: var(--surface2);
+    }
+
+    .chunk-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      gap: 10px;
+      transition: background 0.12s;
+      min-height: 52px;
+    }
+    .chunk-header:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .chunk-index {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      min-width: 32px;
+      font-variant-numeric: tabular-nums;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .chunk-preview {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .chunk-len {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .chunk-copy-quick {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .chunk-copy-quick:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .chunk-toggle {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0.8, 1);
+    }
+    .chunk-toggle svg {
+      transition: transform 0.2s;
+    }
+    .chunk.expanded .chunk-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    .chunk-body {
+      display: none;
+      padding: 0 16px 16px;
+      animation: slideDown 0.2s cubic-bezier(0.2, 0, 0.8, 1);
+    }
+    .chunk.expanded .chunk-body {
+      display: block;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chunk-text {
+      background: var(--surface3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 320px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Courier New', monospace;
+    }
+
+    .chunk-text::-webkit-scrollbar {
+      width: 5px;
+    }
+    .chunk-text::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chunk-text::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    .chunk-text::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .chunk-text::selection {
+      background: rgba(107, 158, 127, 0.3);
+      color: var(--text);
+    }
+
+    .chunk-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 100px;
+      transform: translateY(120px);
+      background: var(--surface2);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 12px 18px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.2, 0, 0.8, 1);
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #toast.success {
+      border-color: rgba(107, 158, 127, 0.3);
+      background: rgba(107, 158, 127, 0.1);
+      color: var(--success);
+    }
+
+    #toast.error {
+      border-color: rgba(168, 85, 85, 0.3);
+      background: rgba(168, 85, 85, 0.1);
+      color: var(--error);
+    }
+
+    #toast.warning {
+      border-color: rgba(201, 149, 111, 0.3);
+      background: rgba(201, 149, 111, 0.1);
+      color: var(--warning);
+    }
+
+    /* ── Scroll to Top Button ── */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 998;
+    }
+
+    #scrollToTopBtn:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: var(--surface2);
+      transform: translateY(-2px);
+    }
+
+    #scrollToTopBtn.show {
+      display: flex;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      height: 100%;
+    }
+
+    .footer-icon {
+      width: 13px;
+      height: 13px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 500;
+    }
+
+    .footer-link:hover {
+      color: var(--text);
+    }
+
+    .footer-avatar {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+      background: var(--surface2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .footer-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── SVG Icons ── */
+    .icon {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* ── Scrollbar Global ── */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ── Mobile Responsive ── */
+    @media (max-width: 768px) {
+      .app {
+        padding: 32px 16px 120px;
+      }
+      .card {
+        padding: 24px;
+      }
+      .header h1 {
+        font-size: 36px;
+      }
+      .options-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .results-actions {
+        width: 100%;
+      }
+      .results-actions .btn {
+        flex: 1;
+        min-width: 0;
+      }
+      #toast {
+        right: 60px;
+        font-size: 12px;
+        padding: 10px 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 24px 12px 130px;
+      }
+      .card {
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .header {
+        margin-bottom: 32px;
+      }
+      .header h1 {
+        font-size: 28px;
+        letter-spacing: -0.5px;
+      }
+      .header p {
+        font-size: 13px;
+      }
+      .card-title {
+        font-size: 11px;
+      }
+      .options-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .option-group label {
+        font-size: 11px;
+      }
+      select, input[type="number"], input[type="text"] {
+        font-size: 16px;
+        padding: 12px;
+      }
+      textarea {
+        min-height: 160px;
+        font-size: 16px;
+        padding: 12px;
+      }
+      .char-counter {
+        font-size: 11px;
+        bottom: 10px;
+        right: 12px;
+      }
+      .action-row {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .btn-clear {
+        margin-left: 0;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+      .btn-sm {
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+      .results-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .results-meta {
+        font-size: 12px;
+      }
+      .results-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .chunk-header {
+        padding: 12px;
+        gap: 8px;
+        min-height: 48px;
+      }
+      .chunk-index {
+        font-size: 10px;
+        min-width: 28px;
+      }
+      .chunk-preview {
+        font-size: 12px;
+      }
+      .chunk-len {
+        font-size: 10px;
+        min-width: 50px;
+      }
+      .chunk-copy-quick {
+        width: 24px;
+        height: 24px;
+      }
+      .chunk-toggle {
+        width: 18px;
+        height: 18px;
+      }
+      .chunk-text {
+        font-size: 12px;
+        padding: 12px;
+        max-height: 240px;
+      }
+      .chunk-actions {
+        gap: 6px;
+      }
+      .chunk-actions .btn {
+        flex: 1;
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+      .modal {
+        padding: 20px;
+      }
+      .modal-title {
+        font-size: 14px;
+      }
+      .modal-body label {
+        font-size: 11px;
+      }
+      .modal-body input {
+        font-size: 16px;
+        padding: 12px;
+      }
+      #scrollToTopBtn {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+      }
+      #toast {
+        right: 12px;
+        left: 12px;
+        bottom: 20px;
+        font-size: 12px;
+        padding: 10px 12px;
+        white-space: normal;
+        max-width: calc(100% - 24px);
+      }
+      .footer {
+        padding: 10px 12px;
+        font-size: 11px;
+      }
+      .footer-content {
+        gap: 4px;
+      }
+      .footer-icon {
+        width: 12px;
+        height: 12px;
+      }
+      .footer-avatar {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .app {
+        padding: 20px 10px 130px;
+      }
+      .card {
+        padding: 16px;
+      }
+      .header h1 {
+        font-size: 24px;
+      }
+      .btn {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+      .results-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <header class="header">
+    <h1>TextSplit</h1>
+    <p>Paste text, choose a split method, get clean chunks instantly.</p>
+  </header>
+
+  <!-- Input Card -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+      Input Text
+    </div>
+    <div class="textarea-wrap">
+      <textarea id="inputText" placeholder="Paste or type your text here..."></textarea>
+      <span class="char-counter" id="charCounter">0 chars</span>
+    </div>
+
+    <!-- Options -->
+    <div class="options-grid">
+      <div class="option-group">
+        <label>Split Method</label>
+        <div class="select-wrap">
+          <select id="splitMethod">
+            <option value="chars">Character Count</option>
+            <option value="chunks">Number of Chunks</option>
+            <option value="symbol">By Symbol / Delimiter</option>
+            <option value="words">Word Count</option>
+            <option value="lines">By Line</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="option-group" id="paramGroup">
+        <label id="paramLabel">Characters per Chunk</label>
+        <input type="number" id="paramValue" value="200" min="1" placeholder="e.g. 200"/>
+        <div class="helper-text" id="paramHelper">Max 1,000,000 characters</div>
+      </div>
+
+      <div class="option-group" id="symbolGroup" style="display:none; grid-column: 1 / -1;">
+        <label>Delimiter Symbol(s)</label>
+        <input type="text" id="symbolValue" placeholder='e.g.  .  or  ,  or  \n  or  ##'/>
+        <div class="helper-text">Use \n for newline, \t for tab</div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-primary" id="splitBtn">
+        <svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+        </svg>
+        Split Text
+      </button>
+      <button class="btn btn-ghost btn-clear" id="clearBtn">
+        <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+        </svg>
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div id="results-section" style="display:none;">
+    <div class="results-header">
+      <div class="results-meta">
+        <strong id="totalChunks">0</strong> chunks • <strong id="totalChars">0</strong> chars total
+      </div>
+      <div class="results-actions">
+        <button class="btn btn-ghost btn-sm" id="copyAllBtn">
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9"/>
+          </svg>
+          Copy All
+        </button>
+        <button class="btn btn-ghost btn-sm" id="downloadTxtBtn">
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          TXT
+        </button>
+        <button class="btn btn-ghost btn-sm" id="exportJsonBtn">
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15h6"/>
+          </svg>
+          JSON
+        </button>
+      </div>
+    </div>
+
+    <div id="chunksContainer"></div>
+  </div>
+
+  <!-- Separator Modal -->
+  <div class="modal-overlay" id="separatorModal">
+    <div class="modal">
+      <div class="modal-title">Custom Separator</div>
+      <div class="modal-body">
+        <label>Separator (between chunks)</label>
+        <input type="text" id="separatorInput" placeholder="e.g.  ---  or  ===  or  \n\n" value="---"/>
+        <div class="helper-text" style="margin-top: 8px;">Use \n for newline</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelSeparatorBtn">Cancel</button>
+        <button class="btn btn-primary" id="confirmSeparatorBtn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">
+    <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    <span id="toastText">Copied to clipboard</span>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTopBtn" title="Scroll to top">
+    <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    Made with
+    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+    by
+    <a href="https://github.com/Owie6789" target="_blank" rel="noopener noreferrer" class="footer-link">
+      Owie
+      <div class="footer-avatar" id="githubAvatar">
+        <img src="" alt="Owie GitHub" loading="lazy"/>
+      </div>
+    </a>
+  </div>
+</footer>
+
+<script>
+  // DOM Elements
+  const inputText = document.getElementById('inputText');
+  const charCounter = document.getElementById('charCounter');
+  const splitMethod = document.getElementById('splitMethod');
+  const paramGroup = document.getElementById('paramGroup');
+  const paramLabel = document.getElementById('paramLabel');
+  const paramValue = document.getElementById('paramValue');
+  const paramHelper = document.getElementById('paramHelper');
+  const symbolGroup = document.getElementById('symbolGroup');
+  const symbolValue = document.getElementById('symbolValue');
+  const splitBtn = document.getElementById('splitBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultsSection = document.getElementById('results-section');
+  const totalChunks = document.getElementById('totalChunks');
+  const totalChars = document.getElementById('totalChars');
+  const chunksContainer = document.getElementById('chunksContainer');
+  const copyAllBtn = document.getElementById('copyAllBtn');
+  const downloadTxtBtn = document.getElementById('downloadTxtBtn');
+  const exportJsonBtn = document.getElementById('exportJsonBtn');
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+  const separatorModal = document.getElementById('separatorModal');
+  const separatorInput = document.getElementById('separatorInput');
+  const cancelSeparatorBtn = document.getElementById('cancelSeparatorBtn');
+  const confirmSeparatorBtn = document.getElementById('confirmSeparatorBtn');
+  const githubAvatar = document.getElementById('githubAvatar');
+
+  // State
+  let chunks = [];
+  let pendingExportType = null;
+
+  // Fetch GitHub avatar
+  async function fetchGitHubAvatar() {
+    try {
+      const response = await fetch('https://api.github.com/users/Owie6789');
+      const data = await response.json();
+      if (data.avatar_url) {
+        const img = githubAvatar.querySelector('img');
+        img.src = data.avatar_url;
+      }
+    } catch (error) {
+      console.error('Failed to fetch GitHub avatar');
+    }
+  }
+
+  // Update character counter
+  inputText.addEventListener('input', () => {
+    const len = inputText.value.length;
+    charCounter.textContent = `${len.toLocaleString()} chars`;
+  });
+
+  // Toggle symbol input based on split method
+  splitMethod.addEventListener('change', () => {
+    const method = splitMethod.value;
+    resultsSection.style.display = 'none';
+    chunks = [];
+    
+    if (method === 'symbol') {
+      paramGroup.style.display = 'none';
+      symbolGroup.style.display = 'block';
+    } else {
+      paramGroup.style.display = 'grid';
+      symbolGroup.style.display = 'none';
+      switch (method) {
+        case 'chars':
+          paramLabel.textContent = 'Characters per Chunk';
+          paramHelper.textContent = 'Max 1,000,000 characters';
+          paramValue.value = '200';
+          break;
+        case 'chunks':
+          paramLabel.textContent = 'Number of Chunks';
+          paramHelper.textContent = 'Divide text into N equal parts';
+          paramValue.value = '5';
+          break;
+        case 'words':
+          paramLabel.textContent = 'Words per Chunk';
+          paramHelper.textContent = 'Each chunk will contain N words';
+          paramValue.value = '50';
+          break;
+        case 'lines':
+          paramLabel.textContent = 'Lines per Chunk';
+          paramHelper.textContent = 'Each chunk will contain N lines';
+          paramValue.value = '10';
+          break;
+      }
+    }
+  });
+
+  // Split text
+  splitBtn.addEventListener('click', () => {
+    const text = inputText.value.trim();
+    if (!text) {
+      showToast('Please enter text to split', 'warning');
+      return;
+    }
+
+    const method = splitMethod.value;
+    let param = parseInt(paramValue.value, 10);
+    let delimiter = symbolValue.value;
+
+    if (method === 'symbol' && !delimiter) {
+      showToast('Please enter a delimiter symbol', 'warning');
+      return;
+    }
+
+    if (isNaN(param) || param < 1) {
+      showToast('Please enter a valid number', 'error');
+      return;
+    }
+
+    if (text.length > 1000000) {
+      showToast('Text exceeds 1M characters. Consider splitting in batches.', 'warning');
+    }
+
+    chunks = splitText(text, method, param, delimiter);
+    if (chunks.length === 0) {
+      showToast('No chunks created. Check your settings.', 'warning');
+      return;
+    }
+    renderChunks();
+    resultsSection.style.display = 'block';
+    showToast(`Split into ${chunks.length} chunks`, 'success');
+  });
+
+  // Clear input
+  clearBtn.addEventListener('click', () => {
+    inputText.value = '';
+    inputText.focus();
+    charCounter.textContent = '0 chars';
+    resultsSection.style.display = 'none';
+    chunks = [];
+  });
+
+  // Copy all chunks
+  copyAllBtn.addEventListener('click', () => {
+    if (chunks.length <= 10) {
+      const allText = chunks.map(chunk => chunk.text).join('\n\n');
+      navigator.clipboard.writeText(allText).then(() => {
+        showToast(`Copied ${chunks.length} chunks to clipboard`, 'success');
+      }).catch(() => {
+        showToast('Failed to copy', 'error');
+      });
+    } else {
+      pendingExportType = 'copy-all';
+      separatorInput.value = '\n\n';
+      separatorModal.classList.add('show');
+    }
+  });
+
+  // Download as TXT
+  downloadTxtBtn.addEventListener('click', () => {
+    pendingExportType = 'txt';
+    separatorInput.value = '---';
+    separatorModal.classList.add('show');
+  });
+
+  // Export as JSON
+  exportJsonBtn.addEventListener('click', () => {
+    pendingExportType = 'json';
+    separatorInput.value = '---';
+    separatorModal.classList.add('show');
+  });
+
+  // Cancel separator modal
+  cancelSeparatorBtn.addEventListener('click', () => {
+    separatorModal.classList.remove('show');
+    pendingExportType = null;
+  });
+
+  // Confirm separator and export
+  confirmSeparatorBtn.addEventListener('click', () => {
+    const separator = separatorInput.value.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+    
+    if (pendingExportType === 'copy-all') {
+      const allText = chunks.map(chunk => chunk.text).join(separator);
+      navigator.clipboard.writeText(allText).then(() => {
+        showToast(`Copied ${chunks.length} chunks to clipboard`, 'success');
+      }).catch(() => {
+        showToast('Failed to copy', 'error');
+      });
+    } else if (pendingExportType === 'txt') {
+      const allText = chunks.map(chunk => chunk.text).join(`\n${separator}\n`);
+      const blob = new Blob([allText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `textsplit_${new Date().getTime()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Downloaded as TXT', 'success');
+    } else if (pendingExportType === 'json') {
+      const jsonData = {
+        metadata: {
+          totalChunks: chunks.length,
+          totalCharacters: chunks.reduce((sum, chunk) => sum + chunk.length, 0),
+          separator: separator,
+          exportedAt: new Date().toISOString()
+        },
+        chunks: chunks
+      };
+      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `textsplit_${new Date().getTime()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Exported as JSON', 'success');
+    }
+    
+    separatorModal.classList.remove('show');
+    pendingExportType = null;
+  });
+
+  // Close modal on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && separatorModal.classList.contains('show')) {
+      separatorModal.classList.remove('show');
+      pendingExportType = null;
+    }
+  });
+
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn.classList.add('show');
+    } else {
+      scrollToTopBtn.classList.remove('show');
+    }
+  });
+
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Split text function
+  function splitText(text, method, param, delimiter) {
+    const chunks = [];
+    let start = 0;
+    let chunkIndex = 1;
+
+    switch (method) {
+      case 'chars':
+        while (start < text.length) {
+          const end = Math.min(start + param, text.length);
+          chunks.push({
+            index: chunkIndex++,
+            text: text.slice(start, end),
+            length: end - start
+          });
+          start = end;
+        }
+        break;
+
+      case 'chunks':
+        const chunkSize = Math.ceil(text.length / param);
+        while (start < text.length) {
+          const end = Math.min(start + chunkSize, text.length);
+          chunks.push({
+            index: chunkIndex++,
+            text: text.slice(start, end),
+            length: end - start
+          });
+          start = end;
+        }
+        break;
+
+      case 'symbol':
+        const parts = text.split(delimiter);
+        parts.forEach(part => {
+          const trimmed = part.trim();
+          if (trimmed) {
+            chunks.push({
+              index: chunkIndex++,
+              text: trimmed,
+              length: trimmed.length
+            });
+          }
+        });
+        break;
+
+      case 'words':
+        const words = text.split(/\s+/).filter(word => word.length > 0);
+        let currentChunk = [];
+        let currentWordCount = 0;
+
+        for (const word of words) {
+          currentChunk.push(word);
+          currentWordCount++;
+
+          if (currentWordCount >= param) {
+            chunks.push({
+              index: chunkIndex++,
+              text: currentChunk.join(' '),
+              length: currentChunk.join(' ').length
+            });
+            currentChunk = [];
+            currentWordCount = 0;
+          }
+        }
+
+        if (currentChunk.length > 0) {
+          chunks.push({
+            index: chunkIndex++,
+            text: currentChunk.join(' '),
+            length: currentChunk.join(' ').length
+          });
+        }
+        break;
+
+      case 'lines':
+        const lines = text.split(/\r?\n/);
+        let currentLineChunk = [];
+        let currentLineCount = 0;
+
+        for (const line of lines) {
+          currentLineChunk.push(line);
+          currentLineCount++;
+
+          if (currentLineCount >= param) {
+            chunks.push({
+              index: chunkIndex++,
+              text: currentLineChunk.join('\n'),
+              length: currentLineChunk.join('\n').length
+            });
+            currentLineChunk = [];
+            currentLineCount = 0;
+          }
+        }
+
+        if (currentLineChunk.length > 0) {
+          chunks.push({
+            index: chunkIndex++,
+            text: currentLineChunk.join('\n'),
+            length: currentLineChunk.join('\n').length
+          });
+        }
+        break;
+    }
+
+    return chunks;
+  }
+
+  // Render chunks
+  function renderChunks() {
+    chunksContainer.innerHTML = '';
+    totalChunks.textContent = chunks.length;
+    totalChars.textContent = chunks.reduce((sum, chunk) => sum + chunk.length, 0).toLocaleString();
+
+    chunks.forEach(chunk => {
+      const chunkEl = document.createElement('div');
+      chunkEl.className = 'chunk';
+      chunkEl.innerHTML = `
+        <div class="chunk-header">
+          <span class="chunk-index">#${chunk.index}</span>
+          <span class="chunk-preview">${escapeHtml(chunk.text.substring(0, 80))}${chunk.text.length > 80 ? '…' : ''}</span>
+          <span class="chunk-len">${chunk.length.toLocaleString()} chars</span>
+          <button class="chunk-copy-quick" data-index="${chunk.index}" title="Copy chunk" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9"/>
+            </svg>
+          </button>
+          <div class="chunk-toggle">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="chunk-body">
+          <div class="chunk-text">${escapeHtml(chunk.text)}</div>
+          <div class="chunk-actions">
+            <button class="btn btn-ghost btn-sm copy-chunk" data-index="${chunk.index}" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9"/>
+              </svg>
+              Copy
+            </button>
+            <button class="btn btn-ghost btn-sm download-chunk" data-index="${chunk.index}" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download
+            </button>
+          </div>
+        </div>
+      `;
+      chunksContainer.appendChild(chunkEl);
+
+      // Toggle chunk expansion
+      const header = chunkEl.querySelector('.chunk-header');
+      header.addEventListener('click', (e) => {
+        if (!e.target.closest('.chunk-copy-quick')) {
+          chunkEl.classList.toggle('expanded');
+        }
+      });
+
+      // Quick copy from header
+      const quickCopyBtn = chunkEl.querySelector('.chunk-copy-quick');
+      quickCopyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(chunk.text).then(() => {
+          showToast(`Chunk #${chunk.index} copied`, 'success');
+        }).catch(() => {
+          showToast('Failed to copy', 'error');
+        });
+      });
+
+      // Copy chunk from expanded view
+      const copyBtn = chunkEl.querySelector('.copy-chunk');
+      copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(chunk.text).then(() => {
+          showToast(`Chunk #${chunk.index} copied`, 'success');
+        }).catch(() => {
+          showToast('Failed to copy', 'error');
+        });
+      });
+
+      // Download chunk
+      const downloadBtn = chunkEl.querySelector('.download-chunk');
+      downloadBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const blob = new Blob([chunk.text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chunk_${chunk.index}_${new Date().getTime()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Downloaded chunk #${chunk.index}`, 'success');
+      });
+    });
+  }
+
+  // Escape HTML for safe display
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Show toast notification
+  function showToast(message, type = 'info') {
+    toastText.textContent = message;
+    toast.className = '';
+    toast.classList.add(type);
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Initialize
+  splitMethod.dispatchEvent(new Event('change'));
+  fetchGitHubAvatar();
+</script>
+</body>
+</html>
